@@ -1,0 +1,71 @@
+{% extends "admin/admin.html" %}
+
+{% block content %}
+    <section class="content-header">
+        <h1>微电影管理系统</h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> 标签管理</a></li>
+            <li class="active">修改标签</li>
+        </ol>
+    </section>
+    <section class="content" id="showcontent">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">修改标签</h3>
+                    </div>
+                    <form role="form" method="post" action="{{ url_for('admin.tag_edit',id=tag.id) }}">
+                        {{ form.csrf_token }}
+                        <div class="box-body">
+
+                            {# 标签编辑成功 #}
+                            {% for get_flashed_message in get_flashed_messages(category_filter=["successfully_edited"]) %}
+                                <div class="alert alert-success alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true"></button>
+                                    <h4><i class="icon fa fa-check">标签编辑成功</i></h4>
+                                    {{ get_flashed_message }}
+                                </div>
+                            {% endfor %}
+
+                            {# 添加标签操作失败 #}
+                            {% for get_flashed_message in get_flashed_messages(category_filter=["error"]) %}
+                                <div class="alert alert-danger alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true"></button>
+                                    <h4><i class="icon fa fa-ban">操作失败</i></h4>
+                                    {{ get_flashed_message }}
+                                </div>
+                            {% endfor %}
+
+                            <div class="form-group">
+                                <label for="input_name">{{ form.name.label }}</label>
+                                <input type="hidden" name="id" value="{{ tag.id }}">
+                                {{ form.name(value=tag.name) }}
+                                {# 验证input内容为空的错误 #}
+                                {% for error in form.name.errors %}
+                                    <div class="col-md-12">
+                                        <font style="color: red;">{{ error }}</font>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            {{ form.submit }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('#g-2').addClass('active');
+            $('#g-2-1').addClass('active');
+        })
+    </script>
+{% endblock %}
